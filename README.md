@@ -64,7 +64,7 @@ To decrypt a message, type:
 $ node aes.mjs decrypt my-secret.json 
 ```
 
-Enter password:
+Enter password (don't use the weak password):
 
 ```
 password: hello12345
@@ -79,6 +79,8 @@ Using AES encryption!
 ```
 
 ## Notes
+
+- Don't use weak password.
 
 - The password and the original message are entered via the keyboard and are never stored.
 
