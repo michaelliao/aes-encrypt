@@ -1,7 +1,8 @@
 # aes-encrypt
+
 A simple command line tool for AES encryption and decryption.
 
-Workflow:
+Here is the encryption process:
 
 ```mermaid
 flowchart
@@ -42,7 +43,7 @@ Using AES encryption!
 EOF
 ```
 
-When `EOF` entered the message was end, and the encrypted data saved as JSON file:
+Enter `EOF` to indicate the end of the message, and the encrypted data will be saved as a JSON file:
 
 ```
 encrypted data saved: my-secret.json
@@ -69,7 +70,7 @@ Enter password:
 password: hello12345
 ```
 
-If password is correct, the decrypted message is display:
+If the password entered is correct, the decrypted message will be displayed:
 
 ```
 Decrypted ok:
@@ -79,6 +80,8 @@ Using AES encryption!
 
 ## Notes
 
-Both the password and message are input by keyboard in terminal, and never saved into file.
+- The password and the original message are entered via the keyboard and are never stored.
 
-The saved encrypted JSON file can be safely backed up.
+- The encrypted JSON files can be securely backed up anywhere.
+
+- Executable program is not provided to prevent malicious tampering, please download the [source file](https://github.com/michaelliao/aes-encrypt/blob/master/aes.mjs) from GitHub and verify by yourself.
