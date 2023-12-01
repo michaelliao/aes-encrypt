@@ -80,6 +80,8 @@ Using AES encryption!
 
 ## Notes
 
+- THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. ([GPLv3](https://github.com/michaelliao/aes-encrypt/blob/master/LICENSE))
+
 - Don't use weak password.
 
 - The password and the original message are entered via the keyboard and are never stored.
