@@ -84,4 +84,4 @@ Using AES encryption!
 
 - The encrypted JSON files can be securely backed up anywhere.
 
-- Executable program is not provided to prevent malicious tampering, please download the [source file](https://github.com/michaelliao/aes-encrypt/blob/master/aes.mjs) from GitHub and verify by yourself.
+- Executable program is not provided to prevent malicious tampering, please install [Node.js](https://nodejs.org) and download the [source file](https://github.com/michaelliao/aes-encrypt/blob/master/aes.mjs) from GitHub and verify by yourself.
