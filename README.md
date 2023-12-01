@@ -86,6 +86,8 @@ Using AES encryption!
 
 - The password and the original message are entered via the keyboard and are never stored.
 
+- Don't copy and paste message as it may be leaked by the clipboard.
+
 - The encrypted JSON files can be securely backed up anywhere.
 
 - Executable program is not provided to prevent malicious tampering, please install [Node.js](https://nodejs.org) and download the [source file](https://github.com/michaelliao/aes-encrypt/blob/master/aes.mjs) from GitHub and verify by yourself.
