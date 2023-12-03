@@ -8,7 +8,7 @@ import { stdin as input, stdout as output } from 'node:process';
 const ALG_ENCRYPT = 'aes-256-cbc';
 const ALG_HASH = 'sha256';
 const KEY_LENGTH = 32;
-const MIN_ITERATIONS = 999999;
+const MIN_ITERATIONS = 1000000;
 
 // password: Buffer
 // salt: Buffer
@@ -110,7 +110,7 @@ async function test() {
 
     // encrypt:
     const pbkdf2Salt = crypto.randomBytes(32);
-    const iterations = MIN_ITERATIONS + crypto.randomInt(999999);
+    const iterations = MIN_ITERATIONS + crypto.randomInt(MIN_ITERATIONS);
     const pbk = createPbkdf2(password, pbkdf2Salt, iterations);
     console.log(`pbk: ${pbk.toString('hex')}`);
     const obj = doEncrypt(pbk, Buffer.from(message, 'utf8'));
@@ -228,7 +228,7 @@ async function main() {
         }
         const [password, message] = await doInputPasswordAndMessage();
         const pbkdf2Salt = crypto.randomBytes(32);
-        const iterations = MIN_ITERATIONS + crypto.randomInt(999999);
+        const iterations = MIN_ITERATIONS + crypto.randomInt(MIN_ITERATIONS);
         const pbk = createPbkdf2(password, pbkdf2Salt, iterations);
         let obj = doEncrypt(pbk, Buffer.from(message, 'utf8'));
         obj['pbkdf2-salt'] = pbkdf2Salt.toString('hex');
