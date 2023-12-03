@@ -156,7 +156,7 @@ function checkPassword(s) {
 
 function doEncrypt(pbk, message) {
     const iv = crypto.randomBytes(16);
-    // hmac-hash the message AND iv for better privacy:
+    // hmac-hash the message using iv as key:
     const messageIvHmac = hmacSha256(iv, message);
     const enc = encrypt(pbk, iv, message);
     return {
