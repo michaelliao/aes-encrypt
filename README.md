@@ -38,8 +38,8 @@ Then type messages:
 
 ```
 type messages (type EOF to end):
-Hello, this is a secret file!
-Using AES encryption!
+Hello, this is a secret file,
+using AES encryption!
 EOF
 ```
 
@@ -49,12 +49,12 @@ Enter `EOF` to indicate the end of the message, and the encrypted data will be s
 encrypted data saved: my-secret.json
 {
   "hash-alg": "sha256",
-  "message-iv-hash": "2fb92934a7b17cafef3a5e29212b0bd73ee035d80294bdaa16fdeb34742eaa46",
+  "message-iv-hmac": "8dd75fea29068a6b5b50120d742216a6c7069272b03689955adbd2bd176265e1",
   "encrypt-alg": "aes-256-cbc",
-  "encrypt-iv": "31d09b20a0fce0ab572653b41c7fba56",
-  "encrypt-data": "48f307ba5b51fc73c4843ec6524ee07b239d9e0d7af76cfec2affaf5035a3d0534f67d7643872f143eebd2abbc9e27bb81f0383b5d1f5c132b0d8afa194c56dd",
-  "pbkdf2-salt": "923a3c3f1372cf7b9cdc254473a1ee4e64b33fa07fc32130e6dbc40199b04326",
-  "pbkdf2-iterations": 999999
+  "encrypt-iv": "bbada646ee64dd1398384900aa6331f6",
+  "encrypt-data": "888b2ca71b8dbee6c6fa3fb1c9583ba84a097d7127dd1e7b1e022c4134ddb3ab604aafdb442a3bfdaa421322d0bf770eb87d19ede00426f6f18a592248c2102d",
+  "pbkdf2-salt": "e9a5c7cba3386b7f36bc876f1d48fea5740d00564bd04c42e332980dbbee86bb",
+  "pbkdf2-iterations": 1352642
 }
 ```
 
@@ -74,8 +74,8 @@ If the password entered is correct, the decrypted message will be displayed:
 
 ```
 Decrypted ok:
-Hello, this is a secret file!
-Using AES encryption!
+Hello, this is a secret file,
+using AES encryption!
 ```
 
 ## Notes
@@ -93,3 +93,15 @@ Using AES encryption!
 - Executable program is not provided to prevent malicious tampering, please install [Node.js](https://nodejs.org) and download the [source file](https://github.com/michaelliao/aes-encrypt/blob/master/aes.mjs) from GitHub and verify by yourself.
 
 - It is recommended to run it offline and close the console window when the program end.
+
+## File Format
+
+The encrypted data are saved as JSON file with the following fields:
+
+- hash-alg: hashing algorithm: "sha256";
+- message-iv-hmac: hash value with hmac-sha256(key: iv, data: message);
+- encrypt-alg: encrypt algorithm: "aes-256-cbc";
+- encrypt-iv: the generated random IV (16 bytes);
+- encrypt-data: the encrypted data;
+- pbkdf2-salt: the generated random salt (32 bytes);
+- pbkdf2-iterations: the random iterations which is between 1000000 ~ 2000000.
