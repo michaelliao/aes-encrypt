@@ -8,7 +8,7 @@ import { stdin as input, stdout as output } from 'node:process';
 const ALG_ENCRYPT = 'aes-256-cbc';
 const ALG_HASH = 'sha256';
 const KEY_LENGTH = 32;
-const KEY_ITERATIONS = 999999;
+const MIN_ITERATIONS = 999999;
 
 // password: Buffer
 // salt: Buffer
@@ -17,10 +17,11 @@ function createPbkdf2(password, salt, iterations) {
     return crypto.pbkdf2Sync(password, salt, iterations, KEY_LENGTH, ALG_HASH);
 }
 
+// key: Buffer
 // data: Buffer
 // return Buffer(32 bytes)
-function sha256(data) {
-    const h = crypto.createHash(ALG_HASH);
+function hmacSha256(key, data) {
+    const h = crypto.createHmac(ALG_HASH, key);
     h.update(data);
     return h.digest();
 }
@@ -109,7 +110,7 @@ async function test() {
 
     // encrypt:
     const pbkdf2Salt = crypto.randomBytes(32);
-    const iterations = KEY_ITERATIONS;
+    const iterations = MIN_ITERATIONS + crypto.randomInt(999999);
     const pbk = createPbkdf2(password, pbkdf2Salt, iterations);
     console.log(`pbk: ${pbk.toString('hex')}`);
     const obj = doEncrypt(pbk, Buffer.from(message, 'utf8'));
@@ -155,12 +156,12 @@ function checkPassword(s) {
 
 function doEncrypt(pbk, message) {
     const iv = crypto.randomBytes(16);
-    // hash the message AND iv for better privacy:
-    const messageIvHash = sha256(Buffer.concat([message, iv]));
+    // hmac-hash the message AND iv for better privacy:
+    const messageIvHmac = hmacSha256(iv, message);
     const enc = encrypt(pbk, iv, message);
     return {
         'hash-alg': ALG_HASH,
-        'message-iv-hash': messageIvHash.toString('hex'),
+        'message-iv-hmac': messageIvHmac.toString('hex'),
         'encrypt-alg': ALG_ENCRYPT,
         'encrypt-iv': iv.toString('hex'),
         'encrypt-data': enc.toString('hex')
@@ -227,7 +228,7 @@ async function main() {
         }
         const [password, message] = await doInputPasswordAndMessage();
         const pbkdf2Salt = crypto.randomBytes(32);
-        const iterations = KEY_ITERATIONS;
+        const iterations = MIN_ITERATIONS + crypto.randomInt(999999);
         const pbk = createPbkdf2(password, pbkdf2Salt, iterations);
         let obj = doEncrypt(pbk, Buffer.from(message, 'utf8'));
         obj['pbkdf2-salt'] = pbkdf2Salt.toString('hex');
@@ -252,7 +253,7 @@ async function main() {
             obj = JSON.parse(json),
             hashAlg = obj['hash-alg'],
             encryptAlg = obj['encrypt-alg'],
-            messageIvHash = obj['message-iv-hash'],
+            messageIvHmac = obj['message-iv-hmac'],
             encryptIv = Buffer.from(obj['encrypt-iv'], 'hex');
         if (hashAlg !== ALG_HASH) {
             console.error(`invalid hash-alg: ${hashAlg}`);
@@ -264,10 +265,10 @@ async function main() {
         }
         const password = await doInputPassword();
         const msgData = doDecrypt(password, obj);
-        // check message-iv-hash:
-        const hash = sha256(Buffer.concat([msgData, encryptIv]));
-        if (hash.toString('hex') !== messageIvHash) {
-            console.error('message-iv-hash check failed!');
+        // check message-iv-hmac:
+        const hash = hmacSha256(encryptIv, msgData);
+        if (hash.toString('hex') !== messageIvHmac) {
+            console.error('message-iv-hmac check failed!');
             return 1;
         }
         console.log('Decrypted ok:');
