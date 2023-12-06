@@ -28,7 +28,7 @@ To encrypt a message, type:
 $ node aes.mjs encrypt my-secret.json
 ```
 
-Enter password:
+Enter password (don't use the weak password):
 
 ```
 password: hello12345
@@ -64,7 +64,7 @@ To decrypt a message, type:
 $ node aes.mjs decrypt my-secret.json 
 ```
 
-Enter password (don't use the weak password):
+Enter password:
 
 ```
 password: hello12345
