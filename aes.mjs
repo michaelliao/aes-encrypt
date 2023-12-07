@@ -142,8 +142,8 @@ function checkPassword(s) {
     if (s.length < 8) {
         return 'password must be at least 8 chars.';
     }
-    if (s.length > 30) {
-        return 'password must be at most 30 chars.';
+    if (s.length > 50) {
+        return 'password must be at most 50 chars.';
     }
     for (let i = 0; i < s.length; i++) {
         let n = s.charCodeAt(i);
